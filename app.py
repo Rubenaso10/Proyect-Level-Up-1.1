@@ -1,11 +1,50 @@
-from flask import Flask
-
+from flask import Flask,request,jsonify
+from billboar_db2 import db, Billboards
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+#Init app
 app =Flask(__name__)
+engine = create_engine("sqlite:///:memory:")
+Session = sessionmaker(bind = engine)#create session active
+
+
+
+
+#Database
+app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:/// movies.db' 
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= False
+db.init_app(app)
 
 #to indicate an endpoint
 @app.route("/")
 def hello_world():
     return "Hi everyone to Movies GT"
+
+#path parameter
+@app.route('/billboard')
+def showMovies():
+    try:
+        for movie in Session.query(Billboards):
+            print(movie)
+        
+    except Exception:
+        print("[SERVER]: Error")
+        return jsonify({"msg": "Ha ocurrido un error"}),500
+    return "<h1>Success</h1>"
+    
+    """
+   
+    return{
+        "movie_id": request.form[Billboard.id],
+        "tittle": request.form[Billboard.title],
+        "url_img": request.form[Billboard.url_img],
+        "clasification": request.form[Billboard.clasification],
+        "id_function": request.form[Billboard.id_function],
+        "date-time":request.form[Billboard.date_time]
+
+    }
+     """
+    
 
 
 

@@ -1,8 +1,11 @@
-from sqlalchemy.orm import declarative_base,sessionmaker 
+from sqlalchemy.orm import declarative_base,sessionmaker
 from sqlalchemy import Column,Integer,String,DateTime,create_engine
+from flask_sqlalchemy import SQLAlchemy
+
 Base = declarative_base()
 engine = create_engine("sqlite:///:memory:")
 
+#db= SQLAlchemy()
 
 class Billboard(Base):
         
@@ -17,7 +20,7 @@ class Billboard(Base):
 
 
 Base.metadata.create_all(engine)
-Session = sessionmaker(bind = engine)#creando una sesion activa
+Session = sessionmaker(bind = engine)#create session active
 session1 = Session()
 
 movie1 = Billboard(title="Avatar",url_img="https://cdn.shopify.com/s/files/1/0057/3728/3618/products/313099306_466556672134552_8738886800381528729_n_480x.progressive.jpg?v=1669136451",clasification="B",id_function=1234,date_time="2022-03-15 12:05:57")
@@ -29,4 +32,9 @@ movie5 = Billboard(title="the ring",url_img="https://cdn.shopify.com/s/files/1/0
 print(movie1.title)
 
 session1.add(movie1)
+session1.add(movie2)
+session1.add(movie3)
+session1.add(movie4)
+session1.add(movie5)
+
 session1.commit()
