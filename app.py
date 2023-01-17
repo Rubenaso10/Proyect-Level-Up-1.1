@@ -1,7 +1,13 @@
 from flask import Flask,request,jsonify
 from billboar_db2 import db, Billboards
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+
+from sqlalchemy.orm import declarative_base,sessionmaker
+Base = declarative_base()
+engine = create_engine("sqlite:///:memory:")
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind = engine)#create session active
+
 #Init app
 app =Flask(__name__)
 engine = create_engine("sqlite:///:memory:")
@@ -11,7 +17,7 @@ Session = sessionmaker(bind = engine)#create session active
 
 
 #Database
-app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:/// movies.db' 
+app.config['SQLALCHEMY_DATABASE_URI']= 'sqlite:///databases///movies.db' 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]= False
 db.init_app(app)
 
@@ -24,8 +30,8 @@ def hello_world():
 @app.route('/billboard')
 def showMovies():
     try:
-        for movie in Session.query(Billboards):
-            print(movie)
+        q = Session.query(Billboards)
+        return q
         
     except Exception:
         print("[SERVER]: Error")

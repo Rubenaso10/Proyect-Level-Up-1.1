@@ -1,6 +1,6 @@
 import sqlite3 as sql
 
-DB_PATH = "movies.db"
+DB_PATH = "databases\\movies.db"
 
 def createDB():
     conn = sql.connect(DB_PATH)
@@ -16,6 +16,8 @@ def createDB():
     conn.commit()
     conn.close()
 
+
+
 def addValues():
     conn = sql.connect(DB_PATH)
     cursor = conn.cursor()
@@ -30,6 +32,7 @@ def addValues():
 
 #print("Hola mundo")
 createDB()
+
 addValues()
     
 
